@@ -26,42 +26,43 @@ public interface Sketch {
   public void run();
 }
 
-Sketch active;  // declare a main, active sketch.
-Sketch[] sketches;
+int nsketches = 2;
+Sketch active;      // declare a main, active sketch.
+Sketch[] sketches;  // an array of available sketches
     
-// set up a MIDI controller. We pass the name of a callback method that
-// we process Program Change messages with, e.g. switching sketches
-Controller ctrl = new Controller("doupdates"); 
+// set up a MIDI controller.
+Controller ctrl; 
     
-void doupdates() {
-  println("here");
-  active = sketches[ctrl.msg]; 
-}
-
 void setup() {
   size(600,600,P2D);
- 
-  // define two sketches, one for each implementation
-  sketches = new Sketch[2];
-  sketches[0] = new Sketch1(6); // constructor for Sketch1 takes an int.
-  sketches[1] = new Sketch2();  // constructor for Sketch2 takes no parameters
-  
+   
   // or, use fullscreen on a second display:
   //fullScreen(P2D, 2);
   
-  // set the active sketch to one of our implementations
+  // define an array of two sketches, one for each implementation
+  sketches    = new Sketch[2];
+  sketches[0] = new Sketch1(6); // constructor for Sketch1 takes an int.
+  sketches[1] = new Sketch2();  
+  
+  // callback
+  ctrl = new Controller(this, "switcher");
+
+  // initialise the active sketch to one of our implementations
   active = sketches[0];
 }
 
 void draw() {
 
+  // check if the controller has got a new Program Change
+  // If so, we need to do something (switch sketches).
+  // Better: implement this as a callback function & automate.
+  if (ctrl.UPDATE) {
+    active = sketches[ctrl.msg];
+  }
+  
   // run the current sketch (update + draw)
   active.run();
 
-  // intermittently output some status info
-  if (frameCount % 60 == 0) {
-    println("in", active.status());
-  }  
 }
 
 void keyPressed() {
@@ -73,4 +74,8 @@ void keyPressed() {
     active = sketches[1];
   }
   println(active.status());
+}
+
+public void switcher() {
+  active = sketches[ctrl.msg];
 }
