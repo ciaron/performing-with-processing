@@ -1,6 +1,6 @@
 import themidibus.*;
 import javax.sound.midi.MidiMessage;
-import java.lang.reflect.Method;
+//import java.lang.reflect.Method;
 
 /* This class manages the Akai LPD-8 controller
    For other devices, you'll need to modify the code.
@@ -14,31 +14,24 @@ class Controller {
   public int[] cc = new int[8];
   public int msg;
   public boolean UPDATE;
-  //String callback;
-  Method m;
+ 
   PApplet parent;
   
-  public Controller(PApplet parent, String _method) {
+  public Controller(PApplet parent) {
     UPDATE=false;
-    
-    myBus = new MidiBus(this, 0, 1);
     
     this.parent = parent;
 
-    try {
-      m = parent.getClass().getMethod(_method);
-    }
-    catch (Exception e) {
-      println("method not found");
-    }
+    myBus = new MidiBus(parent, 0, 1);
     
     // TODO check that MIDI device has been found
     if (1==2) println("MIDI device not found");
   }
   
   void midiMessage(MidiMessage message) {
-  
+    println("yay");
     int value;
+    
     int status = message.getStatus();
     
     UPDATE=false;
@@ -63,15 +56,16 @@ class Controller {
       msg = message.getMessage()[1] & 0xFF;
 
       UPDATE=true;
-      
-      try {
-        m.invoke(parent);
-      }
-      catch (Exception e) {
-        System.err.println("Disabling handler because of an error.");
-        e.printStackTrace();
-        m = null;
-      }
+
     }
   } 
 }
+      
+      //try {
+      //  m.invoke(parent);
+      //}
+      //catch (Exception e) {
+      //  System.err.println("Disabling handler because of an error.");
+      //  e.printStackTrace();
+      //  m = null;
+      //

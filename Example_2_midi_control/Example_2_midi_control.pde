@@ -45,7 +45,7 @@ void setup() {
   sketches[1] = new Sketch2();  
   
   // callback
-  ctrl = new Controller(this, "switcher");
+  ctrl = new Controller(this);
 
   // initialise the active sketch to one of our implementations
   active = sketches[0];
@@ -63,6 +63,11 @@ void draw() {
   // run the current sketch (update + draw)
   active.run();
 
+}
+
+void midiMessage(MidiMessage message) {
+  // there's almost certainly a better way than this.
+  ctrl.midiMessage(message);
 }
 
 void keyPressed() {
