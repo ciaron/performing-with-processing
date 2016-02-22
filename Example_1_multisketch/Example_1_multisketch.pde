@@ -8,6 +8,8 @@
   https://github.com/ciaron
   
   Example 1: setup and run multiple sketches as separate Java classes.
+             This example implements two sketches which can be selected
+             with keys '1' and '2' while running.
 
 */
 
