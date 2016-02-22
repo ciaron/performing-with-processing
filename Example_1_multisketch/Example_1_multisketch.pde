@@ -27,6 +27,9 @@ Sketch s2 = new Sketch2();   // constructor for Sketch2 takes no parameters
     
 void setup() {
   size(600,600,P2D);
+
+  // or, use fullscreen on a second display:
+  //fullScreen(P2D, 2);
   
   // set the active sketch to one of our implementations
   active = s1;
