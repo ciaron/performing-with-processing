@@ -1,6 +1,6 @@
 /*
   This is part of a set of examples of using Processing for live presentation of
-  multiple sketches (e.g VJ-ing)
+  multiple sketches with controllers (e.g VJ-ing)
   
   You're free to use this code for any purpose.
   
@@ -13,6 +13,7 @@
 
 */
 
+
 // We define an interface, which will be implemented for each 
 // sketch we want to run.
 
@@ -21,7 +22,9 @@ public interface Sketch {
   public void run();
 }
 
-Sketch active;
+Sketch active;  // declare a main, active sketch.
+
+// define two sketches, one for each implementation
 Sketch s1 = new Sketch1(6);  // constructor for Sketch1 takes an int.
 Sketch s2 = new Sketch2();   // constructor for Sketch2 takes no parameters
     
@@ -47,6 +50,7 @@ void draw() {
 }
 
 void keyPressed() {
+  // switch between sketches with key '1' or '2'
   if (key == '1') {
     active = s1;
   }
