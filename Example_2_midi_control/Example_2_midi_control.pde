@@ -17,7 +17,6 @@
 
 */
 
-
 // We define an interface, which will be implemented for each 
 // sketch we want to run.
 
@@ -26,7 +25,7 @@ public interface Sketch {
   public void run();
 }
 
-int nsketches = 2;
+int nsketches = 2;  // number of sketches
 Sketch active;      // declare a main, active sketch.
 Sketch[] sketches;  // an array of available sketches
     
@@ -40,24 +39,25 @@ void setup() {
   //fullScreen(P2D, 2);
   
   // define an array of two sketches, one for each implementation
-  sketches    = new Sketch[2];
+  sketches    = new Sketch[nsketches];
   sketches[0] = new Sketch1(6); // constructor for Sketch1 takes an int.
   sketches[1] = new Sketch2();  
   
   // callback
   ctrl = new Controller(this);
 
-  // initialise the active sketch to one of our implementations
+  // initialise the active sketch to the first of our implementations
   active = sketches[0];
 }
 
 void draw() {
 
-  // check if the controller has got a new Program Change
-  // If so, we need to do something (switch sketches).
+  // Switch sketches.
+  // (If the controller has got a new Program Change)
   // Better: implement this as a callback function & automate.
   if (ctrl.UPDATE) {
     active = sketches[ctrl.msg];
+    ctrl.UPDATE=false;
   }
   
   // run the current sketch (update + draw)
@@ -66,6 +66,7 @@ void draw() {
 }
 
 void midiMessage(MidiMessage message) {
+  // Forward the MIDI message to the Controller
   // there's almost certainly a better way than this.
   ctrl.midiMessage(message);
 }

@@ -23,7 +23,10 @@ class Sketch1 implements Sketch {
     background(0);
     strokeWeight(2);
     stroke(255);
-    noFill();
+    
+    // get the fill colours (r,g,b) from the LPD-8's K1, K2, K3 knobs
+    // These values are in the range 0-1, so we scale up to 0-255.
+    fill(255*ctrl.k[0], 255*ctrl.k[1], 255*ctrl.k[2]);
     
     for (int i=0; i<n; i++) {
       ellipse(width/2,height/2,frameCount%(200/(i+1)), frameCount%(400/(i+1)));

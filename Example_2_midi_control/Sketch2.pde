@@ -25,7 +25,9 @@ class Sketch2 implements Sketch {
     noFill();
     rectMode(CENTER);
     
-    rect(width/2,height/2,frameCount%200, frameCount%400);
+    int w = (int)(ctrl.k[0] * width);
+    int h = (int)(ctrl.k[1] * height);
+    rect(width/2,height/2, w, h);
     
   }
   

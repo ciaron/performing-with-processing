@@ -10,7 +10,7 @@ class Controller {
   
   MidiBus myBus;
   
-  public int[] k  = new int[8];
+  public float[] k  = new float[8];
   public int[] cc = new int[8];
   public int msg;
   public boolean UPDATE;
@@ -29,7 +29,7 @@ class Controller {
   }
   
   void midiMessage(MidiMessage message) {
-    println("yay");
+    
     int value;
     
     int status = message.getStatus();
@@ -42,7 +42,9 @@ class Controller {
       value = (int)(message.getMessage()[2] & 0xFF);
       
       if (msg >= 11 & msg <= 18) {
-        k[msg-11] = constrain(value, 0, 127);
+        k[msg-11] = map(value, 0, 127, 0.0, 1.0);
+        // or set to the original 0-127 MIDI range
+        //k[msg-11] = constrain(value, 0, 127);
       } else if (msg >= 1 & msg <= 8) {
         // a pad hit in CONTROLLER CHANGE
         cc[msg-1] = value;//(value > 0) ? 1 : 0;
@@ -60,12 +62,3 @@ class Controller {
     }
   } 
 }
-      
-      //try {
-      //  m.invoke(parent);
-      //}
-      //catch (Exception e) {
-      //  System.err.println("Disabling handler because of an error.");
-      //  e.printStackTrace();
-      //  m = null;
-      //
