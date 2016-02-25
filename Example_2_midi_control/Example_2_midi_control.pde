@@ -1,6 +1,6 @@
 /*
   This is part of a set of examples of using Processing for live presentation of
-  multiple sketches with controllers (e.g VJ-ing)
+  multiple sketches with controllers (e.g VJing)
   
   You're free to use this code for any purpose.
   
@@ -17,9 +17,12 @@
 
 */
 
+// import what we need for the MidiBus
+import themidibus.*;
+import javax.sound.midi.MidiMessage;
+
 // We define an interface, which will be implemented for each 
 // sketch we want to run.
-
 public interface Sketch {
   public String status();
   public void run();
@@ -29,9 +32,9 @@ int nsketches = 2;  // number of sketches
 Sketch active;      // declare a main, active sketch.
 Sketch[] sketches;  // an array of available sketches
     
-// set up a MIDI controller.
-Controller ctrl; 
-    
+Controller ctrl;
+MidiBus midiBus;
+
 void setup() {
   size(600,600,P2D);
    
@@ -43,9 +46,11 @@ void setup() {
   sketches[0] = new Sketch1(6); // constructor for Sketch1 takes an int.
   sketches[1] = new Sketch2();  
   
-  // callback
-  ctrl = new Controller(this);
-
+  ctrl = new Controller();
+  
+  // the Controller will handle the midi callbacks
+  midiBus = new MidiBus(ctrl, 0, 1);
+  
   // initialise the active sketch to the first of our implementations
   active = sketches[0];
 }
@@ -54,7 +59,8 @@ void draw() {
 
   // Switch sketches.
   // (If the controller has got a new Program Change)
-  // Better: implement this as a callback function & automate.
+  // Better? pass the sketch array to the controller and let it handle the update
+  
   if (ctrl.UPDATE) {
     active = sketches[ctrl.msg];
     ctrl.UPDATE=false;
@@ -63,12 +69,6 @@ void draw() {
   // run the current sketch (update + draw)
   active.run();
 
-}
-
-void midiMessage(MidiMessage message) {
-  // Forward the MIDI message to the Controller
-  // there's almost certainly a better way than this.
-  ctrl.midiMessage(message);
 }
 
 void keyPressed() {
