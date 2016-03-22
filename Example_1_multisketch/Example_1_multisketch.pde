@@ -25,12 +25,14 @@ public interface Sketch {
 Sketch active;  // declare a main, active sketch.
 
 // define two sketches, one for each implementation
-Sketch s1 = new Sketch1(6);  // constructor for Sketch1 takes an int.
-Sketch s2 = new Sketch2();   // constructor for Sketch2 takes no parameters
+Sketch s1;
+Sketch s2;
     
 void setup() {
   size(600,600,P2D);
-
+  s1 = new Sketch1(6);  // constructor for Sketch1 takes an int.
+  s2 = new Sketch2(this);   // constructor for Sketch2 takes no parameters
+  
   // or, use fullscreen on a second display:
   //fullScreen(P2D, 2);
   
@@ -42,7 +44,7 @@ void draw() {
 
   // run the current sketch (update + draw)
   active.run();
-
+  
   // intermittently output some status info
   if (frameCount % 600 == 0) {
     println("in", active.status());
